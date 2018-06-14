@@ -7,14 +7,14 @@ services:
     image: sipcapture/homer-webapp
     ports:
       - "80:80"
-    depends_on:
-      - mysql
+    # depends_on:
+    #  - mysql
     volumes:
       - /homer-api/
       - homer-data-semaphore:/homer-semaphore/
       - homer-data-dashboard:/var/www/html/store/dashboard/
-    links:
-      - "mysql:mysql"
+    # links:
+    #  - "mysql:mysql"
     env_file:
       - ./homer.env
     restart: always
@@ -23,12 +23,12 @@ services:
     container_name: homer-cron
     build: ./cron/.
     image: sipcapture/homer-cron
-    depends_on:
-      - mysql
+    # depends_on:
+    #  - mysql
     volumes:
       - homer-data-semaphore:/homer-semaphore/
-    links:
-      - "mysql:mysql"
+    # links:
+    #  - "mysql:mysql"
     env_file:
       - ./homer.env
     restart: always
@@ -39,10 +39,10 @@ services:
     image: sipcapture/homer-kamailio
     # ports:
     #  - "9060:9060/udp"
-    depends_on:
-      - mysql
-    links:
-      - "mysql:mysql"
+    # depends_on:
+    #  - mysql
+    # links:
+    #  - "mysql:mysql"
     volumes:
       - homer-data-semaphore:/homer-semaphore/
     # entrypoint:
@@ -60,10 +60,10 @@ services:
     container_name: bootstrap-mysql
     image: mysql:5.6
     depends_on:
-      - mysql
+      # - mysql
       - webapp
-    links:
-      - "mysql:mysql"
+    # links:
+    #  - "mysql:mysql"
     volumes_from:
       - webapp
     volumes:
@@ -79,20 +79,20 @@ services:
     env_file:
       - ./homer.env
   # --------------------------------------------- MySQL container.
-  mysql:
-    container_name: mysql
-    image: mysql:5.6
-    # ports:
-    #  - "3306:3306"
-    volumes:
-      - ./mysql/run.sh:/run.sh
-      - homer-data-semaphore:/homer-semaphore/
-      - homer-data-mysql:/var/lib/mysql
-    entrypoint:
-      - /run.sh
-    env_file:
-      - ./homer.env
-    restart: always
+  # mysql:
+  #   container_name: mysql
+  #   image: mysql:5.6
+  #   # ports:
+  #   #  - "3306:3306"
+  #   volumes:
+  #     - ./mysql/run.sh:/run.sh
+  #     - homer-data-semaphore:/homer-semaphore/
+  #     - homer-data-mysql:/var/lib/mysql
+  #   entrypoint:
+  #     - /run.sh
+  #   env_file:
+  #     - ./homer.env
+  #   restart: always
 volumes:
   homer-data-semaphore:
   homer-data-mysql:
